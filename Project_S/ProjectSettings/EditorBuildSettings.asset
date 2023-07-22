@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/4.Scenes/GKI/MovePrototype.unity
+    guid: 83d5b75aeeeed7b4689f7392f3d9755c
   m_configObjects: {}
