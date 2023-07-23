@@ -105,6 +105,37 @@ public class MapCreatetor : MonoBehaviour
         GameObject _object = Instantiate(_mapBlocks[_index], _point, Quaternion.identity);
         _object.transform.SetParent(_mapRoot.transform);
 
+
+        Vector3 dir = Vector3.zero;
+        if (_weightPoint.x > 0)
+        {
+            if (_weightPoint.z > 0)
+            {
+                dir.x = 1;
+            }
+            else
+            {
+                dir.x = -1;
+            }
+        }
+        else
+        {
+            if (_weightPoint.z > 0)
+            {
+                dir.x = 1;
+            }
+            else
+            {
+                dir.x = -1;
+            }
+        }
+
+        for(int i = 1; i < 5; i++)
+        {
+            GameObject _object2 = Instantiate(_mapBlocks[_index], _point + (dir * i), Quaternion.identity);
+            _object2.transform.SetParent(_mapRoot.transform);
+        }
+
         _index = (_index + 1) % _mapBlocks.Count;
 
         Debug.Log(_point + "\n" + _weightPoint);
