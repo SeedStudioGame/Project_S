@@ -27,7 +27,8 @@ public class MapCreatetor : MonoBehaviour
     private void Start()
     {
         Init();
-        CreateMap();
+        //CreateMap();
+        CreateMap2();
     }
 
     private void Init()
@@ -58,13 +59,36 @@ public class MapCreatetor : MonoBehaviour
     {
         for (int i = 1; i <= 40; i++)
         {
-            if(i % 10 == 0)
+            if (i % 10 == 0)
             {
                 SetDir();
             }
-        
+
             Spwan();
             _point += _weightPoint;
+        }
+    }
+
+    private void CreateMap2()
+    {
+        _weightPoint.z = 0;
+        _weightPoint.x = 1;
+
+        _point.z = 0.87f * 5;
+        for (int i = 1; i <= 10; i++)
+        {
+            _point.x = -5.5f;
+            if(i % 2 == 0)
+            {
+                _point.x += 0.5f;
+            }
+            _point.z -= 0.87f;
+
+            for (int j = 1; j <= 10; j++)
+            {
+                _point += _weightPoint;
+                Spwan2();
+            }
         }
     }
 
@@ -130,11 +154,21 @@ public class MapCreatetor : MonoBehaviour
             }
         }
 
-        for(int i = 1; i < 5; i++)
+        for (int i = 1; i < 5; i++)
         {
             GameObject _object2 = Instantiate(_mapBlocks[_index], _point + (dir * i), Quaternion.identity);
             _object2.transform.SetParent(_mapRoot.transform);
         }
+
+        _index = (_index + 1) % _mapBlocks.Count;
+
+        Debug.Log(_point + "\n" + _weightPoint);
+    }
+    
+    private void Spwan2()
+    {
+        GameObject _object = Instantiate(_mapBlocks[_index], _point, Quaternion.identity);
+        _object.transform.SetParent(_mapRoot.transform);
 
         _index = (_index + 1) % _mapBlocks.Count;
 
