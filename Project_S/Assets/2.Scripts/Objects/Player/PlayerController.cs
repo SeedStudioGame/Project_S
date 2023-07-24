@@ -10,10 +10,13 @@ public class PlayerController : ObjectBase
 
     private Transform _model;
 
+    [SerializeField]
+    private bool _is2DMode;
+
     private void Start()
     {
         _moveSpeed = 10f;
-        _model = transform.Find("Model");
+        _model = GetModel();
     }
 
     private void Update()
@@ -26,6 +29,25 @@ public class PlayerController : ObjectBase
         {
             Move();
         }
+    }
+
+    private Transform GetModel()
+    {
+        Transform model;
+        if(_is2DMode)
+        {
+            model = transform.Find("Model");
+            model.gameObject.SetActive(false);
+            model = transform.Find("2DModel");
+        }
+        else
+        {
+            model = transform.Find("2DModel");
+            model.GetComponent<Billboard>().StopBillboard(true);
+            model.gameObject.SetActive(false);
+            model = transform.Find("Model");
+        }
+        return model;
     }
 
     private void InputKey()
@@ -53,7 +75,7 @@ public class PlayerController : ObjectBase
 
     private void RotateModel()
     {
-        if(_horizontal == 0 && _vertical == 0)
+        if(_horizontal == 0 && _vertical == 0 || _is2DMode)
         {
             return;
         }
