@@ -17,7 +17,7 @@ public class CreateMap : MonoBehaviour
     void Start()
     {
         // 타일 생성
-        float harpSqrt3 = Mathf.Sqrt(3) * 0.5f;
+        float halfSqrt3 = Mathf.Sqrt(3) * 0.5f;
         float checkOddLayer;
 
         for(int i = 0; i < Height; i++)
@@ -25,7 +25,7 @@ public class CreateMap : MonoBehaviour
             checkOddLayer = (i % 2) == 0 ? 0 : 0.5f;
             for(int j = 0; j < Width; j++)
             {
-                GameObject tile = Instantiate(_tilePrefab, new Vector3(j - checkOddLayer, 0, i * harpSqrt3), Quaternion.identity);
+                GameObject tile = Instantiate(_tilePrefab, new Vector3(j - checkOddLayer, 0, i * halfSqrt3), Quaternion.identity);
                 tile.transform.parent = this.transform;
 
                 randomTile(tile);

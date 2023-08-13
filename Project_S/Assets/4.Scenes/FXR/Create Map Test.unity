@@ -339,10 +339,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tilePrefab: {fileID: 100000, guid: 66a66b512f78d3d4f81ed74fd8e3963a, type: 3}
-  Height: 100
-  Width: 100
-  scale: 20
-  threshold: 0.65
+  Height: 50
+  Width: 50
+  scale: 15
+  threshold: 0.62
 --- !u!4 &720892403
 Transform:
   m_ObjectHideFlags: 0
