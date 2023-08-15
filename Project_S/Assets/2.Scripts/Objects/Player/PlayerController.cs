@@ -1,9 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerController : ObjectBase
-{
+{   
+    private enum ModelMode
+    {
+        Sprite = 0, Model3D = 1, Texture = 2,
+        End
+    }
+    private Dictionary<ModelMode, string> _modelNames = new Dictionary<ModelMode, string>(){
+        { ModelMode.Sprite, "2DSprite" },
+        { ModelMode.Model3D, "3DModel" },
+        { ModelMode.Texture, "2DTextureModel" }
+    };
+
+
     private float _moveSpeed;
     private float _horizontal, _vertical;
     private Vector3 _dir, _rotate;
@@ -11,7 +24,7 @@ public class PlayerController : ObjectBase
     private Transform _model;
 
     [SerializeField]
-    private bool _is2DMode;
+    private ModelMode _modelMode;
 
     private void Start()
     {
@@ -31,24 +44,55 @@ public class PlayerController : ObjectBase
         }
     }
 
+    #region Debuging Model Setting System
+
     private Transform GetModel()
     {
-        Transform model;
-        if(_is2DMode)
+        for(ModelMode index = ModelMode.Sprite; index != ModelMode.End; index++)
         {
-            model = transform.Find("Model");
-            model.gameObject.SetActive(false);
-            model = transform.Find("2DModel");
+            if(index != _modelMode)
+                TurnOffModel(_modelNames[index]);
         }
-        else
-        {
-            model = transform.Find("2DModel");
-            model.GetComponent<Billboard>().StopBillboard(true);
-            model.gameObject.SetActive(false);
-            model = transform.Find("Model");
-        }
+        
+        Transform model = transform.Find(_modelNames[_modelMode]);
+
+        IsFailedFindModel(model);
+
         return model;
     }
+
+    private void TurnOffModel(string name)
+    {
+        Transform model = transform.Find(name);
+
+        if(IsFailedFindModel(model))
+        { return; }
+
+        TurnOffBillboard(model.gameObject);
+
+        model.gameObject.SetActive(false);
+    }
+
+    private void TurnOffBillboard(GameObject model)
+    {
+        Billboard billboard = null;
+        model.gameObject.TryGetComponent<Billboard>(out billboard);
+
+        if (billboard)
+            billboard.StopBillboard(true);
+    }
+
+    private bool IsFailedFindModel(Transform model)
+    {
+        if (model == null)
+        {
+            Debug.LogError("Can't Find Model");
+            return true;
+        }
+        return false;
+    }
+
+    #endregion
 
     private void InputKey()
     {
@@ -75,7 +119,7 @@ public class PlayerController : ObjectBase
 
     private void RotateModel()
     {
-        if(_horizontal == 0 && _vertical == 0 || _is2DMode)
+        if(_horizontal == 0 && _vertical == 0 || _modelMode != ModelMode.Model3D)
         {
             return;
         }
